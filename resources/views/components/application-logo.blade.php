@@ -1,0 +1,1 @@
+<img src="{{ asset('images/logo.png') }}" alt="Dashboard" class="w-12 h-12 inline">
