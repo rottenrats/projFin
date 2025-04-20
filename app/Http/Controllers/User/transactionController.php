@@ -9,6 +9,10 @@ use App\Http\Controllers\Controller;
 
 class transactionController extends Controller
 {
+    public function index()
+    {
+        return view('users.transactions');
+    }
     public function create(Request $request)
     {
         $budgets = Budget::all();

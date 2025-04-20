@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Апр 14 2025 г., 22:27
+-- Время создания: Апр 20 2025 г., 10:53
 -- Версия сервера: 8.0.30
 -- Версия PHP: 8.1.9
 
@@ -168,7 +168,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (9, '2025_03_31_045818_create_recurring_transactions_table', 1),
 (10, '2025_03_31_063348_add_role_to_users_table', 2),
 (11, '2025_04_05_120644_create_companies_table', 3),
-(12, '2025_04_14_183247_update_budgets_table_company_id', 4);
+(12, '2025_04_14_183247_update_budgets_table_company_id', 4),
+(13, '2025_04_15_040534_update_transaction_tablde', 5);
 
 -- --------------------------------------------------------
 
@@ -235,7 +236,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('cQX97APP7dtZ6N2LXcSzY8C1nICVmgYqKKOq4R4B', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoidERldVByWDFVdmF5VWY0dHRIZGUwV0pLREJzYmNOTUg2cVVreDlKZiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC9sb2dpbiI7fX0=', 1744658693);
+('UgVdt92Odsvl4KBCsJIxd8j1vd2S5FDclvZDlLJL', 3, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoieUF0bHZVVTVHRGRiZDZZY1JBQ29EZFZvUXJuR1F4akNsNVVxUzh3dSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzQ6Imh0dHA6Ly9sb2NhbGhvc3Q6ODAwMC91c2Vycy84L2VkaXQiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTozO3M6NzoidXNlcl9pZCI7aTozO3M6MTA6ImNvbXBhbnlfaWQiO2k6MTt9', 1744894012);
 
 -- --------------------------------------------------------
 
@@ -245,7 +246,7 @@ INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, 
 
 CREATE TABLE `transactions` (
   `id` bigint UNSIGNED NOT NULL,
-  `user_id` bigint UNSIGNED NOT NULL,
+  `company_id` bigint UNSIGNED NOT NULL,
   `account_id` bigint UNSIGNED NOT NULL,
   `category_id` bigint UNSIGNED NOT NULL,
   `budget_id` bigint UNSIGNED DEFAULT NULL,
@@ -288,7 +289,7 @@ INSERT INTO `users` (`id`, `login`, `email`, `email_verified_at`, `password`, `r
 (4, 'rotten', 'sdsdf@gmail.com', NULL, '$2y$12$/1A/b6gOIuAI/lP.WjHluu3EZ1B7jF/8eb4acvpe1EOJ0tdGv8FEy', NULL, '2025-03-31 03:42:19', '2025-03-31 03:42:19', 'user', 2),
 (5, 'user3', 'user3@user3', NULL, '$2y$12$HPwpLMEVsz.4c0jgwVYKXuBDXwEOawt9i.TxYUvBXPNyhqnJ0bVjG', NULL, '2025-04-01 05:09:51', '2025-04-01 05:09:51', 'user', 2),
 (7, 'kucik', 'userp@userp', NULL, '$2y$12$44UWRiVsy3FE9w6rgS3lv.jQbroE.iONhlLnctTsl2IEeDf8eEooC', NULL, '2025-04-01 09:29:02', '2025-04-14 16:12:19', 'user', 1),
-(8, 'user1234', 'user12345@user1234.com', NULL, '$2y$12$GFUrFFAi0k9IrmaXV8kjzejGnIBzTcDaPvmpDoEnzCVkXgTSssrb6', NULL, '2025-04-06 14:23:53', '2025-04-13 06:19:31', 'user', 1);
+(8, 'kucenko', 'user12345@user1234.com', NULL, '$2y$12$GFUrFFAi0k9IrmaXV8kjzejGnIBzTcDaPvmpDoEnzCVkXgTSssrb6', NULL, '2025-04-06 14:23:53', '2025-04-15 01:02:08', 'user', 1);
 
 --
 -- Индексы сохранённых таблиц
@@ -372,12 +373,12 @@ ALTER TABLE `sessions`
 --
 ALTER TABLE `transactions`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `transactions_account_id_foreign` (`account_id`),
   ADD KEY `transactions_category_id_foreign` (`category_id`),
   ADD KEY `transactions_budget_id_foreign` (`budget_id`),
   ADD KEY `transactions_date_index` (`date`),
   ADD KEY `transactions_type_index` (`type`),
-  ADD KEY `transactions_user_id_account_id_index` (`user_id`,`account_id`);
+  ADD KEY `transactions_user_id_account_id_index` (`account_id`),
+  ADD KEY `transactions_company_id_foreign` (`company_id`);
 
 --
 -- Индексы таблицы `users`
@@ -418,7 +419,7 @@ ALTER TABLE `companies`
 -- AUTO_INCREMENT для таблицы `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT для таблицы `recurring_transactions`
@@ -485,7 +486,7 @@ ALTER TABLE `transactions`
   ADD CONSTRAINT `transactions_account_id_foreign` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `transactions_budget_id_foreign` FOREIGN KEY (`budget_id`) REFERENCES `budgets` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `transactions_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `transactions_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `transactions_company_id_foreign` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

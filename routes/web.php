@@ -27,7 +27,7 @@ Route::get('/budget/create', [budgetViewController::class, 'create'])->name('bud
 Route::get('/budgets/{id}', [budgetViewController::class, 'show'])->name('budgets.show');
 
 
-
+Route::get('/transactions', [transactionController::class, 'index'])->name('transactions');
 Route::get('/transactions/create', [transactionController::class, 'create'])->name('transactions.create');
 Route::post('/transactions', [transactionController::class, 'store'])->name('transactions.store');
 
